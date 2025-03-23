@@ -46,6 +46,46 @@ public class AppointmentService {
         return appointmentRepository.save(appointment);
     }
 
+    public List<Appointment> findAll() {
+        return appointmentRepository.findAll();
+    }
+
+    public Appointment findById(Long id) {
+        return appointmentRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Appointment not found"));
+    }
+
+    public Appointment updateAppointment(Long id, Appointment updatedData) {
+        Appointment existing = findById(id);
+
+        if (updatedData.getDateTime() != null) {
+            checkAvailability(existing.getProfessional(), updatedData.getDateTime());
+            existing.setDateTime(updatedData.getDateTime());
+        }
+
+        if (updatedData.getAppointmentType() != null) {
+            existing.setAppointmentType(updatedData.getAppointmentType());
+        }
+        if (updatedData.getPaymentStatus() != null) {
+            existing.setPaymentStatus(updatedData.getPaymentStatus());
+        }
+        if (updatedData.getAppointmentStatus() != null) {
+            existing.setAppointmentStatus(updatedData.getAppointmentStatus());
+        }
+        if (updatedData.getValue() != null) {
+            existing.setValue(updatedData.getValue());
+        }
+        existing.setRecurring(updatedData.isRecurring());
+
+        return appointmentRepository.save(existing);
+    }
+
+    public void deleteAppointment(Long id) {
+        Appointment existing = findById(id);
+        appointmentRepository.delete(existing);
+    }
+
+
     private void checkAvailability(User professional, LocalDateTime dateTime) {
         LocalDateTime startOfDay = dateTime.toLocalDate().atStartOfDay();
         LocalDateTime endOfDay = dateTime.toLocalDate().atTime(23, 59);

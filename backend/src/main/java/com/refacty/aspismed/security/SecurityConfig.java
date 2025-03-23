@@ -13,6 +13,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import static com.refacty.aspismed.security.TokenFilter.PUBLIC_ROUTES;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -30,18 +32,17 @@ public class SecurityConfig {
                 // Não vamos usar sessões
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> {
-                    // Vamos delegar ao TokenFilter verificar rotas públicas
-                    // Ou, se quiser, pode permitir aqui:
-                    // .requestMatchers("/api/users/register", "/api/users/login").permitAll()
-                    authorize.anyRequest().authenticated();
+                    authorize
+                            .requestMatchers(
+                                    PUBLIC_ROUTES.toArray(new String[0])
+                            ).permitAll()
+                            .anyRequest().authenticated();
                 })
-                // Adiciona o tokenFilter antes do UsernamePasswordAuthenticationFilter
                 .addFilterBefore(tokenFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
 
-    // Para poder injetar AuthenticationManager se precisar
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();

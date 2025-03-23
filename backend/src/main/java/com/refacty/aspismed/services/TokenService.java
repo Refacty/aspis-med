@@ -26,7 +26,6 @@ public class TokenService {
 
     public String generateToken(User user) {
         Algorithm algorithm = Algorithm.HMAC256(secretWord);
-        // Tempo de expiração de 24 horas (86.400s)
         LocalDateTime expirationTime = LocalDateTime.now().plusSeconds(86400);
 
         String tokenJWT = JWT.create()
@@ -54,10 +53,8 @@ public class TokenService {
                     .build();
 
             var decoded = verifier.verify(token);
-            // Se verificar sem exceção, token é válido
             return decoded.getSubject();
         } catch (Exception e) {
-            // token expirado ou inválido
             request.getSession().invalidate();
             return null;
         }

@@ -99,10 +99,10 @@ public class AppointmentService {
 
         for (Appointment a : existingAppointments) {
             LocalDateTime existingStart = a.getDateTime();
-            // Exemplo: se tem AppointmentType, pegue a duração padrão ou uma customizada
+            // se tem AppointmentType, pegue a duração padrão ou uma customizada
             LocalDateTime existingEnd = existingStart.plusMinutes(60);
 
-            // Nesse caso, assumo 60 minutos, mas você poderia pegar do AppointmentType
+            // da pra pegar do AppointmentType
             LocalDateTime newStart = dateTime;
             // Se também precisar de duração do novo, some +60, por exemplo
             LocalDateTime newEnd = dateTime.plusMinutes(60);

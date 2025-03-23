@@ -19,17 +19,14 @@ public class Appointment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // Healthcare professional
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User professional;
 
-    // Patient
     @ManyToOne
     @JoinColumn(name = "patient_id")
     private Patient patient;
 
-    // Type of appointment
     @ManyToOne
     @JoinColumn(name = "appointment_type_id")
     private AppointmentType appointmentType;
@@ -45,6 +42,5 @@ public class Appointment {
     // Indicates if this appointment repeats
     private boolean recurring;
 
-    // Specific value for this appointment (may differ from defaultValue)
     private Double value;
 }

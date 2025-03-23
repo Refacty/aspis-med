@@ -2,12 +2,14 @@ package com.refacty.aspismed.entities;
 
 import com.refacty.aspismed.enums.Role;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.List;
 
 @Getter
 @Setter
@@ -15,7 +17,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Entity
 @Table(name = "tb_user")
-public class User {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,6 +45,47 @@ public class User {
     @PrePersist
     public void prePersist() {
         this.registrationDate = LocalDateTime.now();
+    }
+
+    // ============== UserDetails Methods ==============
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        if (this.role == Role.ADMIN) {
+            return List.of(
+                    new SimpleGrantedAuthority("ROLE_ADMIN"),
+                    new SimpleGrantedAuthority("ROLE_USER")
+            );
+        }
+        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+    }
+
+    @Override
+    public String getUsername() {
+        return this.email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        // nunca expira
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        // nunca bloqueia
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        // nunca expira
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        // sempre ativo
+        return true;
     }
 
 }

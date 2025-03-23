@@ -3,4 +3,5 @@ backend/src/main/resources/local.properties
 backend/target/classes/*
 backend/target/classes/local.properties
 backend/target/*
-backend/target
+backend/target/
+**/local.properties

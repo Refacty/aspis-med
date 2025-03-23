@@ -1,2 +1,3 @@
 src/main/resources/local.properties
 **/local.properties
+/target/

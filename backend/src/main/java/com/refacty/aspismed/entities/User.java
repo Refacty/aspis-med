@@ -40,6 +40,7 @@ public class User implements UserDetails {
     private LocalDateTime registrationDate;
 
     @Enumerated(EnumType.STRING)
+    @Column (length = 20)
     private Role role;
 
     @PrePersist

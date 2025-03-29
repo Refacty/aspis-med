@@ -2,8 +2,6 @@ import type { Metadata } from "next";
 import { Rethink_Sans } from "next/font/google";
 import "@/app/globals.css"
 import { ReactNode } from "react"
-import { Sidebar } from "@/app/components/Sidebar"
-import { Navbar } from "@/app/components/Navbar"
 import { Toaster } from "react-hot-toast";
 import { UserProvider } from "@/context/UserContext";
 
@@ -21,18 +19,16 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: ReactNode }) {
     return (
         <html lang="pt-BR">
-        <body className="min-h-screen flex">
-        <Sidebar />
+        <body>
+        <Toaster />
 
-        <div className="flex-1 flex flex-col">
-            <Navbar />
-            <main className="p-4">
-            <Toaster/>
-            <UserProvider>
-                {children}
-            </UserProvider>
-            </main>
-        </div>
+        {/*
+          Se você quiser que TODO o app (público e privado)
+          tenha acesso ao user context, coloque aqui.
+        */}
+        <UserProvider>
+            {children}
+        </UserProvider>
         </body>
         </html>
     )

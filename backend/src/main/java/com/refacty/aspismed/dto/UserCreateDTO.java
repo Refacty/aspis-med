@@ -6,5 +6,5 @@ public record UserCreateDTO(
     String cpf,
     String whatsapp,
     String password,
-    String adress
+    String address
 ) {}

@@ -1,7 +1,14 @@
 "use client"
 
-import React, { createContext, useContext, useState, ReactNode } from "react"
+import React, {
+  createContext,
+  useContext,
+  useState,
+  ReactNode,
+  useEffect
+} from "react"
 
+// Ajuste conforme os campos que realmente guarda:
 interface User {
   id: number
   name: string
@@ -11,7 +18,7 @@ interface User {
   password: string
   address: string
   registrationDate: string
-  role: string // "ADMIN" ou "USER", etc.
+  role: string // "ADMIN", "PROFESSIONAL", etc.
 }
 
 interface UserContextProps {
@@ -29,21 +36,36 @@ const UserContext = createContext<UserContextProps>({
 export function UserProvider({ children }: { children: ReactNode }) {
   const [user, setUserState] = useState<User | null>(null)
 
+  // Carrega do localStorage uma vez no mount
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user")
+    if (storedUser) {
+      setUserState(JSON.parse(storedUser))
+    }
+  }, [])
+
+  // Função para atualizar user no estado e no localStorage
   const setUser = (newUser: User | null) => {
     setUserState(newUser)
+    if (newUser) {
+      localStorage.setItem("user", JSON.stringify(newUser))
+    } else {
+      localStorage.removeItem("user")
+    }
   }
 
+  // Desloga removendo do estado + localStorage
   const logout = () => {
-    setUserState(null)
+    setUser(null)
   }
 
   return (
-    <UserContext.Provider value={{ user, setUser, logout }}>
-      {children}
-    </UserContext.Provider>
+      <UserContext.Provider value={{ user, setUser, logout }}>
+        {children}
+      </UserContext.Provider>
   )
 }
 
-export function useUserContext(): UserContextProps {
+export function useUserContext() {
   return useContext(UserContext)
 }

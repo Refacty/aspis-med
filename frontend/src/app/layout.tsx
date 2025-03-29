@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { Rethink_Sans } from "next/font/google";
-import "./globals.css";
-import {Sidebar} from "lucide-react";
-import {Navbar} from "@/app/components/Navbar";
-import {ReactNode} from "react";
+import "@/app/globals.css"
+import { ReactNode } from "react"
+import { Sidebar } from "@/app/components/Sidebar"
+import { Navbar } from "@/app/components/Navbar"
 
 const rethinkSans = Rethink_Sans({
   variable: "--font-rethink-sans",
@@ -14,6 +14,7 @@ export const metadata: Metadata = {
   title: "AspisMed",
   description: "Aplicação para gerenciamento hospitalar",
 };
+
 
 export default function RootLayout({ children }: { children: ReactNode }) {
     return (
@@ -31,3 +32,4 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         </html>
     )
 }
+

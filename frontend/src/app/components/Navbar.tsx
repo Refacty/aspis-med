@@ -30,7 +30,7 @@ export function Navbar() {
                 {user && <Button variant="outline" onClick={() => router.push("/perfil")}>
                     Meu Perfil
                 </Button>}
-                {user && <Button variant="destructive" onClick={handleLogout}>
+                {user && <Button variant="outline" onClick={handleLogout}>
                     Sair
                 </Button>}
                 {!user && <Button variant="outline" onClick={() => {router.push('/entrar')}}>

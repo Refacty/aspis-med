@@ -29,7 +29,7 @@ public class Patient {
 
     private String address;
 
-    @Lob
+    // @Lob
     private String observations;
 
     private LocalDateTime registrationDate;

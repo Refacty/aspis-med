@@ -1,9 +1,9 @@
 "use client"
 
-import React from "react"
+import React, { useEffect } from "react"
 import DefaultForm, { Field } from "@/components/DefaultForm"
 
-export default function PatientForm(id?:any){
+export default function PatientForm(obj?:any){
 
   const fields: Field[] = [
     {
@@ -51,6 +51,7 @@ export default function PatientForm(id?:any){
       endpoint="patients"  
       fields={fields}
       onSuccess={() => {}} 
+      id={obj.id}
       allowDelete={true}
     />
   )

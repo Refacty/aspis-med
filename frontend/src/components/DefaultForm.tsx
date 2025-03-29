@@ -2,6 +2,9 @@
 
 import React, { useEffect, useState } from "react"
 import axios, { AxiosResponse } from "axios"
+import { toastError, toastSuccess } from "@/lib/utils"
+import { usePathname, useRouter } from "next/navigation"
+import { toastConfirm } from "@/app/components/toastConfirm"
 
 // Funções auxiliares de máscara:
 function formatCPF(value: string): string {
@@ -94,7 +97,7 @@ interface Props {
   fields: Field[]
 
   /** ID opcional para entrar em modo edição. */
-  id?: string
+  id?: any
 
   /** Se true, mostra botão de excluir caso haja id. */
   allowDelete?: boolean
@@ -110,9 +113,14 @@ function DefaultForm({ endpoint, fields, id, allowDelete, onSuccess }: Props) {
     return acc
   }, {})
 
+
   const [formData, setFormData] = useState<Record<string, string>>(initialFormState)
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [isLoading, setIsLoading] = useState(false)
+  const [fetch, setFetch] = useState(false);
+  const router = useRouter();
+  const pathname = usePathname();
+
 
   // Cabeçalho de autenticação (opcional)
   const headers = {
@@ -123,7 +131,8 @@ function DefaultForm({ endpoint, fields, id, allowDelete, onSuccess }: Props) {
    * Se receber `id`, faz um GET na API para buscar dados e preencher o form
    */
   useEffect(() => {
-    if (!id) return
+    if (!id || isNaN(id) && !fetch) return
+    setFetch(true);
 
     const fetchEntity = async () => {
       try {
@@ -145,6 +154,8 @@ function DefaultForm({ endpoint, fields, id, allowDelete, onSuccess }: Props) {
         setFormData(updatedFormData)
       } catch (error) {
         console.error("Erro ao buscar registro:", error)
+        toastError("Entidade não encontrada!");
+        router.push('/inicio')
       } finally {
         setIsLoading(false)
       }
@@ -193,16 +204,22 @@ function DefaultForm({ endpoint, fields, id, allowDelete, onSuccess }: Props) {
     try {
       setIsLoading(true)
       const fullUrl = `${process.env.NEXT_PUBLIC_API_URL}/${endpoint}`
+      let response:AxiosResponse<any>;
 
       if (id) {
         // Edição
-        await axios.put(`${fullUrl}/${id}`, formData, { headers })
+        response = await axios.put(`${fullUrl}/${id}`, formData, { headers })
+        toastSuccess("Registro atualizado com sucesso!")
       } else {
         // Criação
-        await axios.post(fullUrl, formData, { headers })
+        response = await axios.post(fullUrl, formData, { headers })
+        toastSuccess("Registro criado com sucesso!")
       }
 
-      onSuccess()
+    onSuccess()
+    if(!pathname.endsWith(response.data.id)){
+      router.push(`${pathname}/${response.data.id}`);
+    }
     } catch (error) {
       console.error("Erro na requisição:", error)
     } finally {
@@ -213,13 +230,15 @@ function DefaultForm({ endpoint, fields, id, allowDelete, onSuccess }: Props) {
   // Handler para deletar
   const handleDelete = async () => {
     if (!id) return
-    const confirma = confirm("Tem certeza que deseja excluir este registro?")
+    const confirma = await toastConfirm("Tem certeza que deseja excluir este registro?")
     if (!confirma) return
 
     try {
       setIsLoading(true)
       const fullUrl = `${process.env.NEXT_PUBLIC_API_URL}/${endpoint}/${id}`
       await axios.delete(fullUrl, { headers })
+      toastSuccess("Registro deletado com sucesso!");
+      router.push("/inicio")
       onSuccess()
     } catch (error) {
       console.error("Erro ao excluir:", error)

@@ -1,13 +1,11 @@
 "use client"
 
+import React, { useEffect } from "react";
 import PatientForm from "../_components/PatientForm";
 
-function page({ params }: {params: {id:any}} ) {
-    const { id } = params;
+function Page({ params }: { params: Promise<{ id: string }> }) {
 
-    return ( 
-        <PatientForm id={id}/>
-     );
+    return <PatientForm id={Number(React.use(params).id)} />;
 }
 
-export default page;
+export default Page;

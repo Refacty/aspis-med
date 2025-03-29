@@ -6,32 +6,28 @@ import { useRouter } from "next/navigation"
 import { UserProvider, useUserContext } from "@/context/UserContext"
 import { Navbar } from "@/app/components/Navbar"
 import { Sidebar } from "@/app/components/Sidebar"
-import { Toaster } from "react-hot-toast"
 
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
     return (
-        <UserProvider>
-            <ProtectedPage>
-                {children}
-            </ProtectedPage>
-            <Toaster/>
-        </UserProvider>
+        <ProtectedPage>
+            {children}
+        </ProtectedPage>
     )
 }
 
 // Componente que realmente verifica se user está logado
 function ProtectedPage({ children }: { children: React.ReactNode }) {
     const router = useRouter()
-    const { user } = useUserContext()
+    const { user, isLoading } = useUserContext()
 
     useEffect(() => {
-        if (!user) {
-            // Se não tem user logado, redireciona para /entrar
+        // Aguarda o carregamento antes de redirecionar
+        if (!isLoading && !user) {
             router.push("/entrar")
         }
-    }, [user, router])
+    }, [user, isLoading, router])
 
-    if (!user) {
+    if (isLoading || !user) {
         return null
     }
 

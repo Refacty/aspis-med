@@ -16,6 +16,7 @@ export function Navbar() {
     const handleLogout = () => {
         // Example: remove token from localStorage
         localStorage.removeItem("token")
+        localStorage.removeItem("user")
         router.push("/entrar")
     }
 

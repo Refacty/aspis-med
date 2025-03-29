@@ -21,11 +21,6 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <html lang="pt-BR">
         <body>
         <Toaster />
-
-        {/*
-          Se você quiser que TODO o app (público e privado)
-          tenha acesso ao user context, coloque aqui.
-        */}
         <UserProvider>
             {children}
         </UserProvider>

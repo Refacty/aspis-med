@@ -5,8 +5,8 @@ import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { loginUser } from "@/lib/api"
-import toast from "react-hot-toast"
 import { useUserContext } from "@/context/UserContext"
+import {toastError, toastSuccess} from "@/lib/utils";
 
 export default function LoginForm() {
     const router = useRouter()
@@ -19,7 +19,7 @@ export default function LoginForm() {
         e.preventDefault()
 
         if (!email || !password) {
-            toast.error("Preencha todos os campos obrigatórios.")
+            toastError("Preencha todos os campos obrigatórios.")
             return
         }
 
@@ -31,10 +31,10 @@ export default function LoginForm() {
 
             // Se quiser também salvar token, ou gerenciar via interceptores
             localStorage.setItem("token", response.token)
-
+            toastSuccess("Login efetuado com sucesso!")
             router.push("/inicio")
         } catch (error) {
-            toast.error("Erro ao realizar login. Verifique suas credenciais.")
+            toastError("Erro ao realizar login. Verifique suas credenciais.")
         }
     }
 

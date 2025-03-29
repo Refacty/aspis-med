@@ -1,3 +1,4 @@
+// context/UserContext.tsx
 "use client"
 
 import React, {
@@ -8,7 +9,7 @@ import React, {
   useEffect
 } from "react"
 
-// Ajuste conforme os campos que realmente guarda:
+// Defina a interface de User conforme necessário
 interface User {
   id: number
   name: string
@@ -25,16 +26,19 @@ interface UserContextProps {
   user: User | null
   setUser: (u: User | null) => void
   logout: () => void
+  isLoading: boolean
 }
 
 const UserContext = createContext<UserContextProps>({
   user: null,
   setUser: () => {},
   logout: () => {},
+  isLoading: true,
 })
 
 export function UserProvider({ children }: { children: ReactNode }) {
   const [user, setUserState] = useState<User | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
 
   // Carrega do localStorage uma vez no mount
   useEffect(() => {
@@ -42,9 +46,9 @@ export function UserProvider({ children }: { children: ReactNode }) {
     if (storedUser) {
       setUserState(JSON.parse(storedUser))
     }
+    setIsLoading(false)
   }, [])
 
-  // Função para atualizar user no estado e no localStorage
   const setUser = (newUser: User | null) => {
     setUserState(newUser)
     if (newUser) {
@@ -54,13 +58,12 @@ export function UserProvider({ children }: { children: ReactNode }) {
     }
   }
 
-  // Desloga removendo do estado + localStorage
   const logout = () => {
     setUser(null)
   }
 
   return (
-      <UserContext.Provider value={{ user, setUser, logout }}>
+      <UserContext.Provider value={{ user, setUser, logout, isLoading }}>
         {children}
       </UserContext.Provider>
   )

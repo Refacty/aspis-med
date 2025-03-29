@@ -12,6 +12,7 @@ export default function PatientForm(obj?:any){
       label: "Nome",
       placeholder: "Digite o nome do paciente",
       defaultValue: "",
+      required:true
     },
     {
       type: "text",
@@ -19,7 +20,8 @@ export default function PatientForm(obj?:any){
       label: "CPF",
       placeholder: "Digite o CPF",
       defaultValue: "",
-      mask: 'cpf'
+      mask: 'cpf',
+      required:true
     },
     {
       type: "text",
@@ -28,6 +30,7 @@ export default function PatientForm(obj?:any){
       placeholder: "Digite o contato",
       mask: "phone",
       defaultValue: "",
+      required:true
     },
     {
       type: "text",
@@ -35,6 +38,7 @@ export default function PatientForm(obj?:any){
       label: "Endereço",
       placeholder: "Digite o endereço",
       defaultValue: "",
+      required:true
     },
     {
       type: "text",

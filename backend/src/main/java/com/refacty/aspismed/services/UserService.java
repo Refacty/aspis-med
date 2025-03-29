@@ -27,7 +27,7 @@ public class UserService {
         String encoded = passwordEncoder.encode(userCreateDTO.password());
         user.setPassword(encoded);
 
-        user.setAddress(userCreateDTO.adress());
+        user.setAddress(userCreateDTO.address());
         user.setEmail(userCreateDTO.email());
         user.setCpf(userCreateDTO.cpf());
         user.setName(userCreateDTO.name());

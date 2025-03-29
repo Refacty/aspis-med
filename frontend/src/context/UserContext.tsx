@@ -19,7 +19,7 @@ interface User {
   password: string
   address: string
   registrationDate: string
-  role: string // "ADMIN", "PROFESSIONAL", etc.
+  role: 'ADMIN' | 'PROFESSIONAL'
 }
 
 interface UserContextProps {

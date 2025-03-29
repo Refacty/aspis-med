@@ -89,7 +89,7 @@ export function DefaultList<T extends object>({
     cell: ({ row }) => (
       <div className="flex gap-2">
         <button
-          onClick={() => router.push(`/${endpoint}/${(row.original as any).id}`)}
+          onClick={() => router.push(`/${itemName}s/${(row.original as any).id}`)}
           className="p-1 text-blue-600 hover:text-blue-800"
           title="Editar"
         >
@@ -145,7 +145,7 @@ export function DefaultList<T extends object>({
         
         {showCreate && (
           <button
-            onClick={() => router.push(`/${endpoint}/novo`)}
+            onClick={() => router.push(`/${itemName}s/`)}
             className="flex items-center px-4 py-2 text-white bg-black rounded-lg hover:bg-gray-800"
           >
             <Plus className="w-5 h-5 mr-2" />

@@ -11,7 +11,7 @@ import { useState } from "react"
 const navItems = [
     { label: "Início", href: "/inicio" },
     { label: "Agenda", href: "/agenda" },
-    { label: "Pacientes", href: "/pacientes" },
+    { label: "Pacientes", href: "/pacientes/listagem" },
     { label: "Atendimentos", href: "/atendimentos" },
     { label: "Finanças", href: "/financas" },
     { label: "Despesas", href: "/despesas" },

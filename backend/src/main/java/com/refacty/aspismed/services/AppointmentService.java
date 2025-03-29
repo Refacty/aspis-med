@@ -1,10 +1,14 @@
 package com.refacty.aspismed.services;
 
+import com.refacty.aspismed.dto.AppointmentCreateDTO;
+import com.refacty.aspismed.dto.AppointmentTypeCreateDTO;
 import com.refacty.aspismed.entities.Appointment;
+import com.refacty.aspismed.entities.AppointmentType;
 import com.refacty.aspismed.entities.Patient;
 import com.refacty.aspismed.entities.User;
 import com.refacty.aspismed.enums.Role;
 import com.refacty.aspismed.repositories.AppointmentRepository;
+import com.refacty.aspismed.repositories.AppointmentTypeRepository;
 import com.refacty.aspismed.repositories.PatientRepository;
 import com.refacty.aspismed.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,34 +24,49 @@ public class AppointmentService {
     private AppointmentRepository appointmentRepository;
 
     @Autowired
+    private AppointmentTypeRepository appointmentTypeRepository;
+
+    @Autowired
     private UserRepository userRepository;
 
     @Autowired
     private PatientRepository patientRepository;
 
-    public Appointment createAppointment(Long professionalId, Long patientId, LocalDateTime dateTime) {
-        User professional = userRepository.findById(professionalId)
+    public Appointment createAppointment(AppointmentCreateDTO dto) {
+        User professional = userRepository.findById(dto.professionalId())
                 .orElseThrow(() -> new RuntimeException("Profissional não encontrado"));
 
         if (professional.getRole() != Role.PROFESSIONAL) {
             throw new RuntimeException("Usuário não é um profissional");
         }
 
-        Patient patient = patientRepository.findById(patientId)
+        Patient patient = patientRepository.findById(dto.patientId())
                 .orElseThrow(() -> new RuntimeException("Paciente não encontrado"));
 
-        checkAvailability(professional, dateTime);
+        AppointmentType appointmentType = appointmentTypeRepository.findById(dto.appointmentTypeId())
+                .orElseThrow(() -> new RuntimeException("Tipo de atendimento não encontrado"));
+
+        checkAvailability(professional, dto.dateTime());
 
         Appointment appointment = new Appointment();
         appointment.setProfessional(professional);
         appointment.setPatient(patient);
-        appointment.setDateTime(dateTime);
+        appointment.setAppointmentType(appointmentType);
+        appointment.setDateTime(dto.dateTime());
+        appointment.setPaymentStatus(dto.paymentStatus());
+        appointment.setAppointmentStatus(dto.appointmentStatus());
+        appointment.setRecurring(dto.recurring());
+        appointment.setValue(dto.value());
 
         return appointmentRepository.save(appointment);
     }
 
     public List<Appointment> findAll() {
         return appointmentRepository.findAll();
+    }
+
+    public List<AppointmentType> findAllAppointmentTypes() {
+        return appointmentTypeRepository.findAll();
     }
 
     public Appointment findById(Long id) {
@@ -111,6 +130,32 @@ public class AppointmentService {
                 throw new RuntimeException("Horário não disponível");
             }
         }
+    }
+
+    public AppointmentType createAppointmentType(AppointmentTypeCreateDTO dto) {
+        AppointmentType type = new AppointmentType();
+        type.setDescription(dto.description());
+        type.setDefaultValue(dto.defaultValue());
+        type.setDefaultDuration(dto.defaultDuration());
+        return appointmentTypeRepository.save(type);
+    }
+
+    public AppointmentType findAppointmentTypeById(Long id) {
+        return appointmentTypeRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Tipo de atendimento não encontrado"));
+    }
+
+    public AppointmentType updateAppointmentType(Long id, AppointmentTypeCreateDTO dto) {
+        AppointmentType type = findAppointmentTypeById(id);
+        type.setDescription(dto.description());
+        type.setDefaultValue(dto.defaultValue());
+        type.setDefaultDuration(dto.defaultDuration());
+        return appointmentTypeRepository.save(type);
+    }
+
+    public void deleteAppointmentType(Long id) {
+        AppointmentType type = findAppointmentTypeById(id);
+        appointmentTypeRepository.delete(type);
     }
 }
 

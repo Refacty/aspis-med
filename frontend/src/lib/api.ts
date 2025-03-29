@@ -78,7 +78,12 @@ export async function updateAppointment(id: number, updatedData: Partial<Appoint
 export async function createAppointment(
     professionalId: number,
     patientId: number,
-    dateTime: string
+    appointmentTypeId: number,
+    dateTime: string,
+    paymentStatus: string,
+    appointmentStatus: string,
+    recurring: boolean,
+    value: number
 ): Promise<Appointment> {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/appointments/create`, {
         method: "POST",
@@ -86,13 +91,54 @@ export async function createAppointment(
             "Content-Type": "application/json",
             "Authorization": `Bearer ${token}`,
         },
-        body: JSON.stringify({ professionalId, patientId, dateTime }),
+        body: JSON.stringify({
+            professionalId,
+            patientId,
+            appointmentTypeId,
+            dateTime,
+            paymentStatus,
+            appointmentStatus,
+            recurring,
+            value,
+        }),
     });
     if (!res.ok) {
-        // Tenta ler a mensagem de erro do corpo da resposta
         const errorData = await res.json();
-        throw new Error(errorData.message || "Ocorreu um erro ao criar o agendamento");
+        throw new Error(errorData.message || "Failed to create appointment");
     }
     return res.json();
 }
+
+export async function createAppointmentType(
+    description: string,
+    defaultValue: number,
+    defaultDuration: number
+) {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/appointments/types`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`,
+        },
+        body: JSON.stringify({ description, defaultValue, defaultDuration }),
+    });
+    if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.message || "Failed to create appointment type");
+    }
+    return res.json();
+}
+
+export async function fetchAppointmentTypes() {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/appointments/types`, {
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`,
+        },
+    });
+    if (!res.ok) throw new Error("Failed to fetch appointment types");
+    return res.json();
+}
+
+
 

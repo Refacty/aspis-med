@@ -18,15 +18,17 @@ export interface Appointment {
         name: string
     }
     patient: Patient
-    appointmentType?: {
-        id: number
-        description: string
-        defaultValue: number
-        defaultDuration: number
-    }
+    appointmentType?: AppointmentType
     dateTime: string  // ou Date, mas geralmente vem como ISO string do backend
     paymentStatus: string
     appointmentStatus: string
     recurring: boolean
     value: number
+}
+
+export interface AppointmentType {
+    id: number
+    description: string
+    defaultValue: number
+    defaultDuration: number
 }

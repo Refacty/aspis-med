@@ -37,18 +37,12 @@ public class User implements UserDetails {
 
     private String address;
 
-    private LocalDateTime registrationDate;
+    private LocalDateTime registrationDate = LocalDateTime.now();
 
     @Enumerated(EnumType.STRING)
     @Column (length = 20)
     private Role role;
 
-    @PrePersist
-    public void prePersist() {
-        this.registrationDate = LocalDateTime.now();
-    }
-
-    // ============== UserDetails Methods ==============
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         if (this.role == Role.ADMIN) {

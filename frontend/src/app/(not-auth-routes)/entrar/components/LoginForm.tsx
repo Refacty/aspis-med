@@ -1,52 +1,64 @@
-// app/entrar/components/LoginForm.tsx
 "use client"
 
-import { useState } from "react"
+import React, { useState } from "react"
 import { useRouter } from "next/navigation"
-import { Button } from "@/components/ui/button"   // Exemplo de shadcn/ui
+import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { loginUser } from "@/lib/api"             // Exemplo de função para login no backend
+import { loginUser } from "@/lib/api"
+import toast from "react-hot-toast"
+import { useUserContext } from "@/context/UserContext"
 
 export default function LoginForm() {
-    const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
-    const router = useRouter()
+  const router = useRouter()
+   const {user, setUser} = useUserContext();
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault()
-        try {
-            const token = await loginUser(email, password)
-            // Salvar token (localStorage, cookies, etc.)
-            localStorage.setItem("token", token)
-            router.push("/inicio")
-        } catch (error) {
-            alert("Invalid credentials.")
-        }
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+
+    if (!email || !password) {
+      toast.error("Preencha todos os campos obrigatórios.")
+      return
     }
 
-    return (
-        <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-                <label className="block mb-1">E-mail</label>
-                <Input
-                    type="email"
-                    placeholder="Enter your email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                />
-            </div>
-            <div>
-                <label className="block mb-1">Password</label>
-                <Input
-                    type="password"
-                    placeholder="Enter your password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                />
-            </div>
-            <Button type="submit" className="w-full">
-                Login
-            </Button>
-        </form>
-    )
+    try {
+      const response = await loginUser({ email, password })
+      setUser(response.user)
+      router.push("/inicio")
+    } catch (error) {
+    toast.error("Erro ao realizar login. Verifique suas credenciais.")
+    }
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <div>
+        <label className="block mb-1 font-semibold">E-mail *</label>
+        <Input
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="seuemail@exemplo.com"
+          required
+        />
+      </div>
+
+      <div>
+        <label className="block mb-1 font-semibold">Senha *</label>
+        <Input
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          placeholder="Digite sua senha"
+          required
+        />
+      </div>
+
+      <Button type="submit" className="w-full">
+        Entrar
+      </Button>
+    </form>
+  )
 }

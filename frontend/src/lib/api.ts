@@ -1,17 +1,23 @@
-// lib/api.ts
-export async function loginUser(email: string, password: string): Promise<string> {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-    })
+import axios from "axios"
+import toast from "react-hot-toast"
 
-    if (!res.ok) {
-        throw new Error("Failed to login")
+
+export async function loginUser(params:any){
+        try{
+            const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/users/login`, params)
+            return response.data
+        } catch(e){
+            throw new Error();
+        }
     }
 
-    const data = await res.text() // ou .json(), dependendo de como o backend retorna
-    return data // supondo que seja apenas o token
+export async function createUser(params:any) {
+    try{
+        const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/users/register`, params)
+        return response.data
+    } catch(e){
+        throw new Error();
+    }
 }
 
 export async function fetchPatients() {

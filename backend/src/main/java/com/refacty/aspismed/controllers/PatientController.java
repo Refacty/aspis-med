@@ -15,6 +15,7 @@ public class PatientController {
     @Autowired
     private PatientService patientService;
 
+
     @PostMapping
     public ResponseEntity<Patient> createPatient(@RequestBody Patient patient) {
         Patient savedPatient = patientService.createPatient(patient);

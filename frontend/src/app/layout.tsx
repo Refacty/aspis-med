@@ -4,6 +4,8 @@ import "@/app/globals.css"
 import { ReactNode } from "react"
 import { Sidebar } from "@/app/components/Sidebar"
 import { Navbar } from "@/app/components/Navbar"
+import { Toaster } from "react-hot-toast";
+import { UserProvider } from "@/context/UserContext";
 
 const rethinkSans = Rethink_Sans({
   variable: "--font-rethink-sans",
@@ -25,7 +27,10 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <div className="flex-1 flex flex-col">
             <Navbar />
             <main className="p-4">
+            <Toaster/>
+            <UserProvider>
                 {children}
+            </UserProvider>
             </main>
         </div>
         </body>

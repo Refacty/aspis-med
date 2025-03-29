@@ -1,5 +1,6 @@
 package com.refacty.aspismed.controllers;
 
+import com.refacty.aspismed.dto.AppointmentCreateDTO;
 import com.refacty.aspismed.entities.Appointment;
 import com.refacty.aspismed.services.AppointmentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +19,9 @@ public class AppointmentController {
     private AppointmentService appointmentService;
 
     @PostMapping("/create")
-    public ResponseEntity<Appointment> createAppointment(@RequestParam Long professionalId,
-                                                         @RequestParam Long patientId,
-                                                         @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dateTime) {
-        Appointment newAppointment = appointmentService.createAppointment(professionalId, patientId, dateTime);
+    public ResponseEntity<Appointment> createAppointment(@RequestBody AppointmentCreateDTO dto) {
+        Appointment newAppointment = appointmentService.createAppointment(
+                dto.professionalId(), dto.patientId(), dto.dateTime());
         return ResponseEntity.ok(newAppointment);
     }
 

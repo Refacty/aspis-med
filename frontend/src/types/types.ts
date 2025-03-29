@@ -1,3 +1,5 @@
+// /types/types.ts
+
 export interface Patient {
     id: number
     name: string
@@ -5,5 +7,26 @@ export interface Patient {
     contact: string
     address: string
     observations: string
-    registrationDate: Date // ou Date, dependendo de como você manipula datas
+    registrationDate: Date
+}
+
+// Definindo o tipo Appointment, usando o Patient já existente:
+export interface Appointment {
+    id: number
+    professional: {
+        id: number
+        name: string
+    }
+    patient: Patient
+    appointmentType?: {
+        id: number
+        description: string
+        defaultValue: number
+        defaultDuration: number
+    }
+    dateTime: string  // ou Date, mas geralmente vem como ISO string do backend
+    paymentStatus: string
+    appointmentStatus: string
+    recurring: boolean
+    value: number
 }

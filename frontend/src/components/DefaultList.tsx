@@ -90,14 +90,14 @@ export function DefaultList<T extends object>({
       <div className="flex gap-2">
         <button
           onClick={() => router.push(`/${itemName}s/${(row.original as any).id}`)}
-          className="p-1 text-blue-600 hover:text-blue-800"
+          className="p-1 text-blue-600 hover:text-blue-800 cursor-pointer"
           title="Editar"
         >
           <Pencil className="w-5 h-5" />
         </button>
         <button
           onClick={() => handleDelete((row.original as any).id)}
-          className="p-1 text-red-600 hover:text-red-800"
+          className="p-1 text-red-600 hover:text-red-800 cursor-pointer"
           title="Excluir"
         >
           <TrashSimple className="w-5 h-5" />

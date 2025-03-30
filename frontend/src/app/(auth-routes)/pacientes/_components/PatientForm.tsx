@@ -56,6 +56,7 @@ export default function PatientForm(obj?:any){
       fields={fields}
       onSuccess={() => {}} 
       id={obj.id}
+      route={"pacientes"}
       allowDelete={true}
     />
   )

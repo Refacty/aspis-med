@@ -23,6 +23,7 @@ interface ListagemProps<T> {
   showCreate?: boolean
   title?: string
   itemName?: string
+  route?: string
 }
 
 export function DefaultList<T extends object>({
@@ -31,7 +32,8 @@ export function DefaultList<T extends object>({
   initialQuery = '',
   showCreate = true,
   title,
-  itemName = 'registro'
+  itemName = 'registro',
+  route
 }: ListagemProps<T>) {
   const router = useRouter()
   const [data, setData] = useState<T[]>([])
@@ -89,7 +91,7 @@ export function DefaultList<T extends object>({
     cell: ({ row }) => (
       <div className="flex gap-2">
         <button
-          onClick={() => router.push(`/${itemName}s/${(row.original as any).id}`)}
+          onClick={() => router.push(`/${route}/${(row.original as any).id}`)}
           className="p-1 text-blue-600 hover:text-blue-800 cursor-pointer"
           title="Editar"
         >
@@ -140,12 +142,12 @@ export function DefaultList<T extends object>({
     <div className="p-6 bg-white rounded-lg shadow">
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-semibold text-gray-800">
-          {title || `${itemName}s`}
+          {title || `${route}`}
         </h1>
         
         {showCreate && (
           <button
-            onClick={() => router.push(`/${itemName}s/`)}
+            onClick={() => router.push(`/${route}/`)}
             className="flex items-center px-4 py-2 text-white bg-black rounded-lg hover:bg-gray-800"
           >
             <Plus className="w-5 h-5 mr-2" />

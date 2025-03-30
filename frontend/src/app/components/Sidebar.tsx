@@ -12,6 +12,7 @@ const navItems = [
     { label: "Início", href: "/inicio" },
     { label: "Agenda", href: "/agenda" },
     { label: "Pacientes", href: "/pacientes/listagem" },
+    { label: "Tipo de Agendamento", href: "/tipo-agendamento/listagem" },
     { label: "Finanças", href: "/financas" },
     { label: "Despesas", href: "/despesas" },
     { label: "Usuários", href: "/usuarios" },

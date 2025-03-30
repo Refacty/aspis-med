@@ -19,5 +19,5 @@ public class AppointmentType {
 
     private Double defaultValue;
 
-    private Integer defaultDuration; // e.g., duration in minutes
+    private Integer defaultDuration; 
 }

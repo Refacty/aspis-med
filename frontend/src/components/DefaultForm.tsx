@@ -102,11 +102,13 @@ interface Props {
   /** Se true, mostra botão de excluir caso haja id. */
   allowDelete?: boolean
 
+  route:string
+
   /** Função executada em caso de sucesso na requisição. */
   onSuccess: () => void
 }
 
-function DefaultForm({ endpoint, fields, id, allowDelete, onSuccess }: Props) {
+function DefaultForm({ endpoint, fields, id, allowDelete, onSuccess, route }: Props) {
   // Monta estado inicial a partir dos defaultValues
   const initialFormState = fields.reduce((acc: Record<string, string>, field) => {
     acc[field.name] = field.defaultValue || ""
@@ -155,7 +157,8 @@ function DefaultForm({ endpoint, fields, id, allowDelete, onSuccess }: Props) {
       } catch (error) {
         console.error("Erro ao buscar registro:", error)
         toastError("Entidade não encontrada!");
-        router.push('/inicio')
+        router.push(`/${route}/listagem
+        `)
       } finally {
         setIsLoading(false)
       }
@@ -238,7 +241,7 @@ function DefaultForm({ endpoint, fields, id, allowDelete, onSuccess }: Props) {
       const fullUrl = `${process.env.NEXT_PUBLIC_API_URL}/${endpoint}/${id}`
       await axios.delete(fullUrl, { headers })
       toastSuccess("Registro deletado com sucesso!");
-      router.push("/inicio")
+      router.push(`/${route}/listagem`)
       onSuccess()
     } catch (error) {
       console.error("Erro ao excluir:", error)

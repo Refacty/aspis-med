@@ -42,6 +42,7 @@ export default function PacientesPage() {
         endpoint="patients"
         columns={columns}
         title="Listagem de Pacientes"
+        route="pacientes"
         itemName="paciente"
         showCreate={true}
       />

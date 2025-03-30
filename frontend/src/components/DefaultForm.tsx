@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react"
 import axios, { AxiosResponse } from "axios"
 import { toastError, toastSuccess } from "@/lib/utils"
-import { usePathname, useRouter } from "next/navigation"
+import { redirect, usePathname, useRouter } from "next/navigation"
 import { toastConfirm } from "@/app/components/toastConfirm"
 
 // Funções auxiliares de máscara:
@@ -85,6 +85,7 @@ export interface Field {
   minLength?: number
   maxLength?: number
   disabled?: boolean
+  overwriteValue?:string
   mask?: "cpf" | "phone"
   options?: Array<{ label: string; value: string }>
 }
@@ -107,13 +108,15 @@ interface Props {
 
   tittle:string
 
+  blockRedirect?:boolean
+
   /** Função executada em caso de sucesso na requisição. */
   onSuccess: () => void
 
 
 }
 
-function DefaultForm({ endpoint, fields, id, allowDelete, onSuccess, route, tittle }: Props) {
+function DefaultForm({ endpoint, fields, id, allowDelete, onSuccess, route, tittle, blockRedirect }: Props) {
   // Monta estado inicial a partir dos defaultValues
   const initialFormState = fields.reduce((acc: Record<string, string>, field) => {
     acc[field.name] = field.defaultValue || ""
@@ -134,6 +137,7 @@ function DefaultForm({ endpoint, fields, id, allowDelete, onSuccess, route, titt
     Authorization: `Bearer ${localStorage?.getItem("token") ?? ""}`,
   }
 
+
   /**
    * Se receber `id`, faz um GET na API para buscar dados e preencher o form
    */
@@ -153,17 +157,19 @@ function DefaultForm({ endpoint, fields, id, allowDelete, onSuccess, route, titt
         // Monta novo estado do form, aplicando máscara se for o caso
         const updatedFormData = { ...formData }
         fields.forEach((field) => {
-          if (data[field.name] !== undefined && data[field.name] !== null) {
-            updatedFormData[field.name] = applyMask(String(data[field.name]), field.mask)
+          if (field.overwriteValue !== undefined) { // Se houver overwriteValue
+            updatedFormData[field.name] = field.overwriteValue; // Usa o valor fixo
+          } else if (data[field.name] !== undefined && data[field.name] !== null) {
+            updatedFormData[field.name] = applyMask(String(data[field.name]), field.mask);
           }
-        })
+        });
 
         setFormData(updatedFormData)
       } catch (error) {
         console.error("Erro ao buscar registro:", error)
         toastError("Entidade não encontrada!");
-        router.push(`/${route}/listagem
-        `)
+      
+        if (!blockRedirect) router.push(`/${route}/listagem`)
       } finally {
         setIsLoading(false)
       }
@@ -226,7 +232,7 @@ function DefaultForm({ endpoint, fields, id, allowDelete, onSuccess, route, titt
 
     onSuccess()
     if(!pathname.endsWith(response.data.id)){
-      router.push(`${pathname}/${response.data.id}`);
+      if(!blockRedirect) router.push(`${pathname}/${response.data.id}`);
     }
     } catch (error) {
       console.error("Erro na requisição:", error)
@@ -246,7 +252,7 @@ function DefaultForm({ endpoint, fields, id, allowDelete, onSuccess, route, titt
       const fullUrl = `${process.env.NEXT_PUBLIC_API_URL}/${endpoint}/${id}`
       await axios.delete(fullUrl, { headers })
       toastSuccess("Registro deletado com sucesso!");
-      router.push(`/${route}/listagem`)
+      if(!blockRedirect) router.push(`/${route}/listagem`)
       onSuccess()
     } catch (error) {
       console.error("Erro ao excluir:", error)
@@ -262,7 +268,7 @@ function DefaultForm({ endpoint, fields, id, allowDelete, onSuccess, route, titt
     >
       <h1 className="font-bold text-lg">{tittle}</h1>
       {fields.map((field:Field) => {
-  const { name, label, type, placeholder, required, disabled, options } = field
+  const { name, label, type, placeholder, required, disabled, options, overwriteValue } = field
   const value = formData[name] || ""
 
   return (

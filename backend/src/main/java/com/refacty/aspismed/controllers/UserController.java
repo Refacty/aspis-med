@@ -2,6 +2,7 @@ package com.refacty.aspismed.controllers;
 
 import com.refacty.aspismed.dto.UserCreateDTO;
 import com.refacty.aspismed.dto.UserLoginDTO;
+import com.refacty.aspismed.entities.Patient;
 import com.refacty.aspismed.entities.User;
 import com.refacty.aspismed.services.TokenService;
 import com.refacty.aspismed.services.UserService;
@@ -22,6 +23,20 @@ public class UserController {
 
     @Autowired
     private TokenService tokenService;
+
+
+    @GetMapping("/{id}")
+    public ResponseEntity<User> getUseryId(@PathVariable Long id) {
+        User user = userService.findById(id);
+        return ResponseEntity.ok(user);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User updatedUser) {
+        User user = userService.updateUser(id, updatedUser);
+        return ResponseEntity.ok(user);
+    }
+
 
     @PostMapping("/register")
     public ResponseEntity<Object> register(@RequestBody UserCreateDTO user) {

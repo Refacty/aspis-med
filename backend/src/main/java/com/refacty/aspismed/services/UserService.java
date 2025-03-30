@@ -36,6 +36,28 @@ public class UserService {
         return userRepository.save(user);
     }
 
+
+    public User updateUser(Long id, User user) {
+        User userUpdate = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+    
+        userUpdate.setName(user.getName());
+        userUpdate.setCpf(user.getCpf());
+        userUpdate.setWhatsapp(user.getWhatsapp());
+        userUpdate.setEmail(user.getEmail());
+        userUpdate.setAddress(user.getAddress());
+    
+        if (user.getPassword() != null && !user.getPassword().isBlank()) {
+            userUpdate.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
+    
+        return userRepository.save(userUpdate);
+    }
+
+    public User findById(Long id){
+        return userRepository.findById(id).orElse(null);
+    }
+
     public User login(String email, String rawPassword) {
         User user = (User) userRepository.findByEmail(email);
         if (user == null) {

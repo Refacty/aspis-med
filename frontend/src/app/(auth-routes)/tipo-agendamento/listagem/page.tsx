@@ -36,8 +36,8 @@ export default function AppointmentTypesPage() {
       <DefaultList<AppointmentType>
         endpoint="appointment-types"
         columns={columns}
-        title="Tipos de Atendimento"
-        itemName="tipo de atendimento"
+        title="Tipos de Agendamento"
+        itemName="tipo de agendamento"
         showCreate={true}
         route="tipo-agendamento"
       />

@@ -14,7 +14,7 @@ export default function AgendaPage() {
     };
 
     const handleCreateAppointmentType = () => {
-        router.push("/agenda/criar/tipo");
+        router.push("/tipo-agendamento");
     };
 
     return (

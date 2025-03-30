@@ -58,6 +58,7 @@ export default function PatientForm(obj?:any){
       id={obj.id}
       route={"pacientes"}
       allowDelete={true}
+      tittle={"Cadastrar Paciente"}
     />
   )
 }

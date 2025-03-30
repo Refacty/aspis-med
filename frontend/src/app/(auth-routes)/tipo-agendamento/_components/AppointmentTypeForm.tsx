@@ -48,6 +48,7 @@ export default function AppointmentTypeForm({ obj }: { obj?: any }) {
       route={'tipo-agendamento'}
       onSuccess={() => {}}
       id={obj}
+      tittle="Cadastrar Tipo de Agendamento"
       allowDelete={true}
     />
   )

@@ -104,11 +104,13 @@ interface Props {
 
   route:string
 
+  tittle:string
+
   /** Função executada em caso de sucesso na requisição. */
   onSuccess: () => void
 }
 
-function DefaultForm({ endpoint, fields, id, allowDelete, onSuccess, route }: Props) {
+function DefaultForm({ endpoint, fields, id, allowDelete, onSuccess, route, tittle }: Props) {
   // Monta estado inicial a partir dos defaultValues
   const initialFormState = fields.reduce((acc: Record<string, string>, field) => {
     acc[field.name] = field.defaultValue || ""
@@ -255,6 +257,7 @@ function DefaultForm({ endpoint, fields, id, allowDelete, onSuccess, route }: Pr
       onSubmit={handleSubmit}
       className="flex flex-col w-full p-4 space-y-4 bg-white rounded shadow"
     >
+      <h1 className="font-bold text-lg">{tittle}</h1>
       {fields.map((field) => {
         const { name, label, type, placeholder, required, disabled } = field
         const value = formData[name] || ""

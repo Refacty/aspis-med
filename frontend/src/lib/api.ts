@@ -2,7 +2,7 @@ import axios from "axios"
 import toast from "react-hot-toast"
 import {Appointment} from "@/types/types";
 
-const token = localStorage.getItem("token");
+const token = typeof window === 'undefined' ? null : localStorage.getItem("token");
 
 export async function loginUser(params:any){
         try{

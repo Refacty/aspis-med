@@ -72,6 +72,7 @@ interface UserCreateDTO {
 }
 
 export default function RegisterForm() {
+  if (typeof window === 'undefined') return null
   const router = useRouter()
   const { user, setUser } = useUserContext();
 
@@ -107,6 +108,7 @@ export default function RegisterForm() {
       return;
     }
   }
+
 
   return (
     <div className="flex w-full justify-center items-center mt-20">

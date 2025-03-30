@@ -42,6 +42,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
 
   // Carrega do localStorage uma vez no mount
   useEffect(() => {
+    if (typeof window === 'undefined') return;
     const storedUser = localStorage.getItem("user")
     if (storedUser) {
       setUserState(JSON.parse(storedUser))

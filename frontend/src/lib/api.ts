@@ -7,6 +7,11 @@ const token = typeof window === 'undefined' ? null : localStorage.getItem("token
 export async function loginUser(params:any){
         try{
             const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/users/login`, params)
+            
+            if(typeof window !== 'undefined'){
+                localStorage.setItem("token", response.data.token)
+            }
+            
             return response.data
         } catch(e){
             throw new Error();
@@ -16,6 +21,11 @@ export async function loginUser(params:any){
 export async function createUser(params:any) {
     try{
         const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/users/register`, params)
+
+        if(typeof window !== 'undefined'){
+            localStorage.setItem("token", response.data.token)
+        }
+
         return response.data
     } catch(e){
         throw new Error();

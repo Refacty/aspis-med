@@ -32,7 +32,6 @@ export default function LoginForm() {
             setUser(response.user)
 
             // Se quiser também salvar token, ou gerenciar via interceptores
-            localStorage.setItem("token", response.token)
             toastSuccess("Login efetuado com sucesso!")
             router.push("/inicio")
         } catch (error) {
@@ -67,6 +66,8 @@ export default function LoginForm() {
             <Button type="submit" className="w-full">
                 Entrar
             </Button>
+
+            <span>Ou cadastrar</span>
         </form>
     )
 }

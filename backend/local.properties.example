@@ -1,5 +1,5 @@
-refacty.database.ip=localhost
-refacty.database.port=3308
+refacty.database.ip=mysql
+refacty.database.port=3306
 refacty.database.db=aspismed
 refacty.database.user=goat
-refacty.database.pass=goat
+refacty.database.pass=Refacty_db5498!#

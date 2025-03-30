@@ -7,7 +7,7 @@ services:
     image: mysql:8
     container_name: mysql8
     environment:
-      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_ROOT_PASSWORD: 123
       MYSQL_DATABASE: aspismed
       MYSQL_USER: goat
       MYSQL_PASSWORD: Refacty_db5498!#
@@ -24,12 +24,6 @@ services:
     container_name: aspismed-backend
     ports:
       - "8080:8080"
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/aspismed?useSSL=false&allowPublicKeyRetrieval=true
-      SPRING_DATASOURCE_USERNAME: goat
-      SPRING_DATASOURCE_PASSWORD: goat
-    volumes:
-      - ./backend/local.properties:/app/config/local.properties
     depends_on:
       - mysql
     networks:
@@ -43,8 +37,6 @@ services:
       NEXTAUTH_URL: http://localhost
       NEXT_PUBLIC_API_URL: http://localhost/api
       NODE_ENV: production
-    volumes:
-      - ./frontend/.env:/app/.env
     networks:
       - aspismed_network
     restart: unless-stopped

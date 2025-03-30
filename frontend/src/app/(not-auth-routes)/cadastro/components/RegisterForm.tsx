@@ -184,6 +184,9 @@ export default function RegisterForm() {
         <Button type="submit" className="w-full">
           Criar Conta
         </Button>
+
+        <span onClick={() => {router.push('/entrar')}} className="self-center text-sm hover:underline text-gray-500 cursor-pointer">Já tem uma conta? Entrar</span>
+
       </form>
     </div>
 

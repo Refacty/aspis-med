@@ -67,7 +67,7 @@ export default function LoginForm() {
                 Entrar
             </Button>
 
-            <span>Ou cadastrar</span>
+            <span onClick={() => {router.push('/cadastro')}} className="self-center hover:underline text-sm text-gray-500 cursor-pointer">Não tem uma conta? Cadastre-se aqui</span>
         </form>
     )
 }

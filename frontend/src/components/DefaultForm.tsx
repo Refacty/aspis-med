@@ -86,6 +86,7 @@ export interface Field {
   maxLength?: number
   disabled?: boolean
   mask?: "cpf" | "phone"
+  options?: Array<{ label: string; value: string }>
 }
 
 // Props gerais do form
@@ -108,6 +109,8 @@ interface Props {
 
   /** Função executada em caso de sucesso na requisição. */
   onSuccess: () => void
+
+
 }
 
 function DefaultForm({ endpoint, fields, id, allowDelete, onSuccess, route, tittle }: Props) {
@@ -171,7 +174,7 @@ function DefaultForm({ endpoint, fields, id, allowDelete, onSuccess, route, titt
   }, [id]) // só re-fetch se mudar o id
 
   // Lida com mudanças no input
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: any) => {
     const { name, value } = e.target
     const fieldDef = fields.find((f) => f.name === name)
     const maskedValue = applyMask(value, fieldDef?.mask)
@@ -258,34 +261,50 @@ function DefaultForm({ endpoint, fields, id, allowDelete, onSuccess, route, titt
       className="flex flex-col w-full p-4 space-y-4 bg-white rounded shadow"
     >
       <h1 className="font-bold text-lg">{tittle}</h1>
-      {fields.map((field) => {
-        const { name, label, type, placeholder, required, disabled } = field
-        const value = formData[name] || ""
+      {fields.map((field:Field) => {
+  const { name, label, type, placeholder, required, disabled, options } = field
+  const value = formData[name] || ""
 
-        return (
-          <div key={name} className="flex flex-col">
-            <label htmlFor={name} className="mb-1 font-semibold text-gray-700">
-              {label} {required ? "*" : ""}
-            </label>
+  return (
+    <div key={name} className="flex flex-col">
+      <label htmlFor={name} className="mb-1 font-semibold text-gray-700">
+        {label} {required ? "*" : ""}
+      </label>
 
-            <input
-              id={name}
-              name={name}
-              type={type || "text"}
-              placeholder={placeholder || ""}
-              value={value}
-              onChange={handleChange}
-              disabled={disabled || isLoading}
-              className="px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
-            />
+      {type === "select" ? (
+        <select
+          id={name}
+          name={name}
+          value={value}
+          onChange={handleChange}
+          disabled={disabled || isLoading}
+          className="px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
+        >
+          {options?.map((option:any) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select>
+      ) : (
+        <input
+          id={name}
+          name={name}
+          type={type || "text"}
+          placeholder={placeholder || ""}
+          value={value}
+          onChange={handleChange}
+          disabled={disabled || isLoading}
+          className="px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
+        />
+      )}
 
-            {/* Se existir mensagem de erro para esse campo, exibimos */}
-            {errors[name] && (
-              <small className="mt-1 text-red-500">{errors[name]}</small>
-            )}
-          </div>
-        )
-      })}
+      {errors[name] && (
+        <small className="mt-1 text-red-500">{errors[name]}</small>
+      )}
+    </div>
+  )
+})}
 
       <div className="flex items-center space-x-2">
         {/* Botão principal: Criar ou Atualizar */}

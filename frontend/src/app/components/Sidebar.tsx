@@ -5,17 +5,13 @@ import { usePathname } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { useState } from "react"
 
-// Caso tenha uma função auxiliar para lidar com classes condicionalmente
-// ex: import { cn } from "@/lib/utils" (ajuste conforme sua estrutura)
-
 const navItems = [
     { label: "Início", href: "/inicio" },
     { label: "Agenda", href: "/agenda" },
     { label: "Pacientes", href: "/pacientes/listagem" },
     { label: "Tipo de Agendamento", href: "/tipo-agendamento/listagem" },
     { label: "Finanças", href: "/financas" },
-    { label: "Despesas", href: "/despesas" },
-    { label: "Usuários", href: "/usuarios" },
+    { label: "Despesas", href: "/despesas/listagem" },
 ]
 
 export function Sidebar() {

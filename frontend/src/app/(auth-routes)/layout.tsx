@@ -15,13 +15,11 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
     )
 }
 
-// Componente que realmente verifica se user está logado
 function ProtectedPage({ children }: { children: React.ReactNode }) {
     const router = useRouter()
     const { user, isLoading } = useUserContext()
 
     useEffect(() => {
-        // Aguarda o carregamento antes de redirecionar
         if (!isLoading && !user) {
             router.push("/entrar")
         }

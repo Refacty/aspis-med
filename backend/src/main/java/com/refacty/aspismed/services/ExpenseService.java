@@ -2,6 +2,7 @@ package com.refacty.aspismed.services;
 
 import com.refacty.aspismed.entities.Expense;
 import com.refacty.aspismed.enums.PaymentStatus;
+import com.refacty.aspismed.projections.FinancialReportProjection;
 import com.refacty.aspismed.repositories.ExpenseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -55,6 +56,10 @@ public class ExpenseService {
                 .filter(e -> e.getPaymentStatus() == PaymentStatus.PAID)
                 .mapToDouble(Expense::getValue)
                 .sum();
+    }
+
+    public List<FinancialReportProjection> generateFinancialReport(LocalDate startDate, LocalDate endDate) {
+        return expenseRepository.findFinances(startDate, endDate);
     }
 }
 

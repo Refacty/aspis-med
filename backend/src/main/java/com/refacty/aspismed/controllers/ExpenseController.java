@@ -1,8 +1,10 @@
 package com.refacty.aspismed.controllers;
 
 import com.refacty.aspismed.entities.Expense;
+import com.refacty.aspismed.projections.FinancialReportProjection;
 import com.refacty.aspismed.services.ExpenseService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -63,5 +65,17 @@ public class ExpenseController {
         Double sum = expenseService.sumPaidExpensesInDateRange(startDate, endDate);
         return ResponseEntity.ok(sum);
     }
+
+
+        @GetMapping("/report")
+    public ResponseEntity<List<FinancialReportProjection>> getFinancialReport(
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
+        
+        List<FinancialReportProjection> report = expenseService.generateFinancialReport(startDate, endDate);
+        return ResponseEntity.ok(report);
+    }
+
+
 }
 

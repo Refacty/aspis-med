@@ -28,18 +28,21 @@ export default function AppointmentModal({ appointment, onClose }: AppointmentMo
                 <DialogHeader>
                     <DialogTitle>Detalhes do Atendimento</DialogTitle>
                     <DialogDescription>
-                        <div>
-                            <strong>Paciente:</strong> {appointment.patient.name}
-                        </div>
-                        <div>
-                            <strong>Data/Hora:</strong> {new Date(appointment.dateTime).toLocaleString()}
-                        </div>
-                        <div>
-                            <strong>Status:</strong> {appointment.appointmentStatus}
-                        </div>
-                        <div>
-                            <strong>Pagamento:</strong> {appointment.paymentStatus}
-                        </div>
+            <span>
+              <strong>Paciente:</strong> {appointment.patient.name}
+            </span>
+                        <br />
+                        <span>
+              <strong>Data/Hora:</strong> {new Date(appointment.dateTime).toLocaleString()}
+            </span>
+                        <br />
+                        <span>
+              <strong>Status:</strong> {appointment.appointmentStatus}
+            </span>
+                        <br />
+                        <span>
+              <strong>Pagamento:</strong> {appointment.paymentStatus}
+            </span>
                     </DialogDescription>
                 </DialogHeader>
                 <div className="mt-4">
@@ -50,9 +53,7 @@ export default function AppointmentModal({ appointment, onClose }: AppointmentMo
                     )}
                 </div>
                 <DialogFooter>
-                    <Button variant="outline" onClick={onClose}>
-                        Fechar
-                    </Button>
+                    <Button variant="outline" onClick={onClose}>Fechar</Button>
                 </DialogFooter>
             </DialogContent>
         </Dialog>

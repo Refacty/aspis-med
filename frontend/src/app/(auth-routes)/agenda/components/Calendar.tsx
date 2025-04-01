@@ -28,10 +28,9 @@ export default function CalendarComponent() {
         loadAppointments()
     }, [])
 
-    // Mapeia os atendimentos para os eventos do FullCalendar
     const events = appointments.map((appointment) => ({
         id: appointment.id.toString(),
-        title: appointment.patient.name, // Você pode exibir outro campo, como o tipo do atendimento
+        title: appointment.patient.name,
         date: appointment.dateTime,
         extendedProps: {
             appointment: appointment
@@ -39,7 +38,6 @@ export default function CalendarComponent() {
     }))
 
     const handleDateSelect = (selectInfo: DateSelectArg) => {
-        // Aqui você pode abrir um formulário para criar um novo atendimento.
         console.log("Selected date:", selectInfo.startStr)
     }
 
@@ -58,6 +56,11 @@ export default function CalendarComponent() {
                 select={handleDateSelect}
                 events={events}
                 eventClick={handleEventClick}
+                eventTimeFormat={{
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: false
+                }}
             />
             {modalOpen && selectedAppointment && (
                 <AppointmentModal

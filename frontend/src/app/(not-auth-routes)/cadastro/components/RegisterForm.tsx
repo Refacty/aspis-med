@@ -103,7 +103,7 @@ export default function RegisterForm() {
 
       const response = await createUser(newUser)
       setUser(response.user);
-      router.push("/inicio")
+      router.push("/trocar-senha")
     } catch (error) {
       return;
     }

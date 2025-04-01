@@ -22,7 +22,7 @@ public class Patient {
 
     private String name;
 
-    @Column(unique = true, nullable = false)
+    @Column(unique = true)
     private String cpf;
 
     private String contact;

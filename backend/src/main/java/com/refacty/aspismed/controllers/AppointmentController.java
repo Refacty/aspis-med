@@ -3,12 +3,14 @@ package com.refacty.aspismed.controllers;
 import com.refacty.aspismed.dto.AppointmentCreateDTO;
 import com.refacty.aspismed.entities.Appointment;
 import com.refacty.aspismed.entities.AppointmentType;
+import com.refacty.aspismed.repositories.AppointmentRepository;
 import com.refacty.aspismed.services.AppointmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 @RestController
@@ -16,7 +18,24 @@ import java.util.List;
 public class AppointmentController {
 
     @Autowired
+    private AppointmentRepository appointmentRepository;
+
+    @Autowired
     private AppointmentService appointmentService;
+
+    AppointmentController(AppointmentRepository appointmentRepository) {
+        this.appointmentRepository = appointmentRepository;
+    }
+
+    @GetMapping("/dashboard")
+    public ResponseEntity<LinkedHashMap<Object, Object>> getDashboard() {
+        LinkedHashMap<Object, Object> resultMap = new LinkedHashMap<>();
+        resultMap.put("receitasPorMes", appointmentRepository.findReceitasMonth());
+        resultMap.put("despesasPorMes", appointmentRepository.findDespesasByMonth());
+        resultMap.put("atendimentosHoje", appointmentRepository.findAppointmentToday());
+
+        return ResponseEntity.ok(resultMap);
+    }
 
     @PostMapping("/create")
     public ResponseEntity<Appointment> createAppointment(@RequestBody AppointmentCreateDTO dto) {
@@ -54,6 +73,8 @@ public class AppointmentController {
         List<AppointmentType> appointmentTypes = appointmentService.findAllAppointmentTypes();
         return ResponseEntity.ok(appointmentTypes);
     }
+
+    
 
 }
 

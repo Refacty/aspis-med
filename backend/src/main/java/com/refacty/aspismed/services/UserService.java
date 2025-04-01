@@ -41,11 +41,25 @@ public class UserService {
         User userUpdate = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
     
-        userUpdate.setName(user.getName());
-        userUpdate.setCpf(user.getCpf());
-        userUpdate.setWhatsapp(user.getWhatsapp());
-        userUpdate.setEmail(user.getEmail());
-        userUpdate.setAddress(user.getAddress());
+        if (user.getName() != null && !user.getName().isBlank()) {
+            userUpdate.setName(user.getName());
+        }
+    
+        if (user.getCpf() != null && !user.getCpf().isBlank()) {
+            userUpdate.setCpf(user.getCpf());
+        }
+    
+        if (user.getWhatsapp() != null && !user.getWhatsapp().isBlank()) {
+            userUpdate.setWhatsapp(user.getWhatsapp());
+        }
+    
+        if (user.getEmail() != null && !user.getEmail().isBlank()) {
+            userUpdate.setEmail(user.getEmail());
+        }
+    
+        if (user.getAddress() != null && !user.getAddress().isBlank()) {
+            userUpdate.setAddress(user.getAddress());
+        }
     
         if (user.getPassword() != null && !user.getPassword().isBlank()) {
             userUpdate.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -53,6 +67,7 @@ public class UserService {
     
         return userRepository.save(userUpdate);
     }
+    
 
     public User findById(Long id){
         return userRepository.findById(id).orElse(null);

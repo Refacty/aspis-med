@@ -69,7 +69,11 @@ public class AppointmentService {
 
     public List<Appointment> findAllByProfessionalAuthenticated() {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return appointmentRepository.findAllByProfessional_Id(user.getId());
+        if (user.getRole() != Role.ADMIN) {
+            return appointmentRepository.findAllByProfessional_Id(user.getId());
+        } else {
+            return appointmentRepository.findAll();
+        }
     }
 
     public List<AppointmentType> findAllAppointmentTypes() {

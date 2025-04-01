@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class AppointmentService {
@@ -46,7 +47,7 @@ public class AppointmentService {
         AppointmentType appointmentType = appointmentTypeRepository.findById(dto.appointmentTypeId())
                 .orElseThrow(() -> new RuntimeException("Tipo de atendimento não encontrado"));
 
-        checkAvailability(professional, dto.dateTime());
+        checkAvailability(professional, dto.dateTime(), appointmentType.getDefaultDuration(), 0L);
 
         Appointment appointment = new Appointment();
         appointment.setProfessional(professional);
@@ -74,27 +75,33 @@ public class AppointmentService {
                 .orElseThrow(() -> new RuntimeException("Appointment not found"));
     }
 
-    public Appointment updateAppointment(Long id, Appointment updatedData) {
+    public Appointment updateAppointment(Long id, AppointmentCreateDTO dto) {
         Appointment existing = findById(id);
-
-        if (updatedData.getDateTime() != null) {
-            checkAvailability(existing.getProfessional(), updatedData.getDateTime());
-            existing.setDateTime(updatedData.getDateTime());
+        AppointmentType type = null;
+        if (dto.appointmentTypeId() == null) {
+            throw new RuntimeException("Appointment type id not found");
+        } else {
+            type = findAppointmentTypeById(dto.appointmentTypeId());
+            existing.setAppointmentType(type);
         }
 
-        if (updatedData.getAppointmentType() != null) {
-            existing.setAppointmentType(updatedData.getAppointmentType());
+        if (dto.dateTime() != null) {
+            checkAvailability(existing.getProfessional(), dto.dateTime(), type.getDefaultDuration(), id);
+            existing.setDateTime(dto.dateTime());
         }
-        if (updatedData.getPaymentStatus() != null) {
-            existing.setPaymentStatus(updatedData.getPaymentStatus());
+
+        if (dto.paymentStatus() != null) {
+            existing.setPaymentStatus(dto.paymentStatus());
         }
-        if (updatedData.getAppointmentStatus() != null) {
-            existing.setAppointmentStatus(updatedData.getAppointmentStatus());
+
+        if (dto.appointmentStatus() != null) {
+            existing.setAppointmentStatus(dto.appointmentStatus());
         }
-        if (updatedData.getValue() != null) {
-            existing.setValue(updatedData.getValue());
+
+        if (dto.value() != null) {
+            existing.setValue(dto.value());
         }
-        existing.setRecurring(updatedData.isRecurring());
+        existing.setRecurring(dto.recurring());
 
         return appointmentRepository.save(existing);
     }
@@ -104,8 +111,7 @@ public class AppointmentService {
         appointmentRepository.delete(existing);
     }
 
-
-    private void checkAvailability(User professional, LocalDateTime dateTime) {
+    private void checkAvailability(User professional, LocalDateTime dateTime, Integer duration, Long id) {
         LocalDateTime startOfDay = dateTime.toLocalDate().atStartOfDay();
         LocalDateTime endOfDay = dateTime.toLocalDate().atTime(23, 59);
 
@@ -117,17 +123,16 @@ public class AppointmentService {
                 );
 
         for (Appointment a : existingAppointments) {
-            LocalDateTime existingStart = a.getDateTime();
-            // se tem AppointmentType, pegue a duração padrão ou uma customizada
-            LocalDateTime existingEnd = existingStart.plusMinutes(60);
+            if (!Objects.equals(id, a.getId())) {
+                LocalDateTime existingStart = a.getDateTime();
+                LocalDateTime existingEnd = existingStart.plusMinutes(a.getAppointmentType().getDefaultDuration());
 
-            // da pra pegar do AppointmentType
-            LocalDateTime newStart = dateTime;
-            // Se também precisar de duração do novo, some +60, por exemplo
-            LocalDateTime newEnd = dateTime.plusMinutes(60);
+                LocalDateTime newStart = dateTime;
+                LocalDateTime newEnd = dateTime.plusMinutes(duration);
 
-            if (existingStart.isBefore(newEnd) && existingEnd.isAfter(newStart)) {
-                throw new RuntimeException("Horário não disponível");
+                if (existingStart.isBefore(newEnd) && existingEnd.isAfter(newStart)) {
+                    throw new RuntimeException("Horário não disponível");
+                }
             }
         }
     }

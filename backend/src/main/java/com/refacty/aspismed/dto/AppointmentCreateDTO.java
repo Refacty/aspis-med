@@ -6,6 +6,7 @@ import com.refacty.aspismed.enums.PaymentStatus;
 import java.time.LocalDateTime;
 
 public record AppointmentCreateDTO(
+        Long id,
         Long professionalId,
         Long patientId,
         Long appointmentTypeId,

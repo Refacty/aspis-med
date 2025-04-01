@@ -34,3 +34,15 @@ export function toastWarn(message: string) {
 export function toastSuccess(message:string) {
   toast.success(message);
 }
+
+export const AppointmentStatusMap: Record<string, string> = {
+  SCHEDULED: "Em andamento",
+  COMPLETED: "Finalizado",
+  CANCELED: "Cancelado",
+};
+
+export const PaymentStatusMap: Record<string, string> = {
+  PENDING: "Pendente",
+  PAID: "Pago",
+  CANCELED: "Cancelado",
+};

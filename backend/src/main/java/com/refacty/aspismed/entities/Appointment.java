@@ -1,5 +1,7 @@
 package com.refacty.aspismed.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.refacty.aspismed.enums.AppointmentStatus;
 import com.refacty.aspismed.enums.PaymentStatus;
 import jakarta.persistence.*;
@@ -21,13 +23,14 @@ public class Appointment {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @JsonIgnore
     private User professional;
 
     @ManyToOne
     @JoinColumn(name = "patient_id")
     private Patient patient;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "appointment_type_id")
     private AppointmentType appointmentType;
 

@@ -70,17 +70,27 @@ export async function fetchAppointments(): Promise<Appointment[]> {
     return res.json()
 }
 
-export async function updateAppointment(id: number, updatedData: Partial<Appointment>): Promise<Appointment> {
+export async function updateAppointment(
+    id: number,
+    updatedData: {
+        appointmentTypeId?: any
+        dateTime?: string
+        paymentStatus?: string
+        appointmentStatus?: string
+        value?: number
+    }
+): Promise<Appointment> {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/appointments/${id}`, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json",
             "Authorization": `Bearer ${token}`,
         },
-        body: JSON.stringify(updatedData)
+        body: JSON.stringify(updatedData),
     })
     if (!res.ok) {
-        throw new Error("Failed to update appointment")
+        const errorData = await res.json()
+        throw new Error(errorData.message || "Failed to update appointment")
     }
     return res.json()
 }
@@ -148,6 +158,22 @@ export async function fetchAppointmentTypes() {
     });
     if (!res.ok) throw new Error("Failed to fetch appointment types");
     return res.json();
+}
+
+// Função para excluir um agendamento
+export async function deleteAppointment(id: number): Promise<void> {
+    const token = localStorage.getItem("token")
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/appointments/${id}`, {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`,
+        },
+    })
+    if (!res.ok) {
+        const errorData = await res.json()
+        throw new Error(errorData.message || "Failed to delete appointment")
+    }
 }
 
 

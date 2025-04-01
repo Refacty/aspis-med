@@ -47,7 +47,7 @@ Antes de iniciar, certifique-se de ter instalado:
 
 1️⃣ Clone o repositório:  
 ```bash
-git clone https://github.com/seuusuario/aspismed.git
+git clone https://github.com/Refacty/aspis-med.git
 cd aspismed
 docker-compose up
 Acesse localhost no navegador :D

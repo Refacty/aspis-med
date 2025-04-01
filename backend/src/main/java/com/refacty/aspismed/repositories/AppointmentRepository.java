@@ -40,7 +40,5 @@ WHERE
     Double findDespesasByMonth();
 
 
-
-
-
+    List<Appointment> findAllByProfessional_Id(Long professionalId);
 }

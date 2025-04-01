@@ -45,7 +45,7 @@ public class AppointmentController {
 
     @GetMapping
     public ResponseEntity<List<Appointment>> getAllAppointments() {
-        List<Appointment> appointments = appointmentService.findAll();
+        List<Appointment> appointments = appointmentService.findAllByProfessionalAuthenticated();
         return ResponseEntity.ok(appointments);
     }
 

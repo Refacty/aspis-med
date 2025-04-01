@@ -12,6 +12,7 @@ import com.refacty.aspismed.repositories.AppointmentTypeRepository;
 import com.refacty.aspismed.repositories.PatientRepository;
 import com.refacty.aspismed.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -64,6 +65,11 @@ public class AppointmentService {
 
     public List<Appointment> findAll() {
         return appointmentRepository.findAll();
+    }
+
+    public List<Appointment> findAllByProfessionalAuthenticated() {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return appointmentRepository.findAllByProfessional_Id(user.getId());
     }
 
     public List<AppointmentType> findAllAppointmentTypes() {

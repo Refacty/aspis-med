@@ -1,7 +1,7 @@
 # 🐍 AspisMed - Sistema de Gestão de Atendimentos Médicos  
 
 ![GitHub repo](https://img.shields.io/badge/Status-Em%20desenvolvimento-orange)  
-![Tech](https://img.shields.io/badge/Tech-Java%20%7C%20MySql%20%7C%20Docker-blue)  
+![Tech](https://img.shields.io/badge/Tech-Spring%20%7C%20Next.js%20%7C%20MySql%20%7C%20Docker-blue)  
 
 ## 📌 Sobre o Projeto  
 **AspisMed** é uma aplicação web para **gestão de atendimentos em consultórios de profissionais de saúde**. A plataforma permite que médicos, fisioterapeutas e outros profissionais organizem sua agenda, cadastrem pacientes, gerenciem atendimentos e acompanhem suas finanças de forma simples e eficiente.  
@@ -31,7 +31,8 @@ Este projeto foi desenvolvido como parte da **Atividade de Validação de Discip
 ✅ Tela de **Finanças**, com filtro por período para visualizar **receitas e despesas**  
 
 ## 🛠 Tecnologias Utilizadas  
-- **Spring Boot** (Backend)  
+- **Spring Boot** (Backend)
+- **Next.js** (Frontend)  
 - **MySql** (Banco de Dados)  
 - **FullCalendar** (Gerenciamento de Agenda)  
 - **Docker** (Ambiente de Desenvolvimento)  
@@ -40,9 +41,7 @@ Este projeto foi desenvolvido como parte da **Atividade de Validação de Discip
 
 ### **Pré-requisitos**  
 Antes de iniciar, certifique-se de ter instalado:  
-- Docker e Docker Compose  
-- Java 17+  
-- MySql 8  
+- Docker e Docker Compose
 
 ### **Passo a Passo**  
 
@@ -50,3 +49,5 @@ Antes de iniciar, certifique-se de ter instalado:
 ```bash
 git clone https://github.com/seuusuario/aspismed.git
 cd aspismed
+docker-compose up
+Acesse localhost no navegador :D

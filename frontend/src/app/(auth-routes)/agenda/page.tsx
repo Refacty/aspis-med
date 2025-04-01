@@ -19,9 +19,9 @@ export default function AgendaPage() {
 
     return (
         <div>
-            <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center justify-between mb-4 flex-wrap">
                 <h1 className="text-2xl font-bold">Agenda</h1>
-                <div className="flex space-x-2">
+                <div className="flex flex-wrap gap-2">
                     <Button onClick={handleCreateAppointment}>
                         Criar agendamento
                     </Button>

@@ -22,9 +22,8 @@ export function Navbar() {
 
     return (
         <div className="border-b h-16 px-4 flex items-center justify-between">
-            <div>
-                {/* You can place a brand/logo or a page title here */}
-                <h1 className="text-xl font-bold">AspisMed</h1>
+            <div className={"flex items-center"}>
+                <h1 className="text-xl font-bold ms-10 md:ms-0 mt-2">AspisMed</h1>
             </div>
             <div className="flex items-center space-x-2">
                 {user && <Button variant="outline" onClick={() => router.push("/perfil")}>

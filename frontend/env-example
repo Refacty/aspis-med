@@ -1,0 +1,3 @@
+NEXTAUTH_URL=http://localhost
+NEXT_PUBLIC_SECRET_KEY="44Ref4ctySecret1fjfhjldwqofmwodm"
+NEXT_PUBLIC_API_URL=http://localhost/api

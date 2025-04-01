@@ -3,7 +3,7 @@ FROM node:18-alpine AS builder
 WORKDIR /app
 
 # Copia o .env-example e renomeia para .env
-COPY .env-example .env
+COPY env-example .env
 
 COPY package*.json ./
 RUN npm ci

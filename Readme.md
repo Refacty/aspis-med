@@ -6,7 +6,10 @@
 ## 📌 Sobre o Projeto  
 **AspisMed** é uma aplicação web para **gestão de atendimentos em consultórios de profissionais de saúde**. A plataforma permite que médicos, fisioterapeutas e outros profissionais organizem sua agenda, cadastrem pacientes, gerenciem atendimentos e acompanhem suas finanças de forma simples e eficiente.  
 
-Este projeto foi desenvolvido como parte da **Atividade de Validação de Disciplina** da faculdade.  
+Este projeto foi desenvolvido como parte da **Atividade de Validação de Disciplina** da faculdade.
+
+## Vídeo demonstração
+[www.youtube.com/watch?v=IJUL3eTE5kk](https://www.youtube.com/watch?v=IJUL3eTE5kk)
 
 ## 🚀 Funcionalidades  
 
@@ -51,3 +54,5 @@ git clone https://github.com/Refacty/aspis-med.git
 cd aspis-med
 docker-compose up
 Acesse localhost no navegador :D
+```
+

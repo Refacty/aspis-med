@@ -1,7 +1,8 @@
 # 🐍 AspisMed - Sistema de Gestão de Atendimentos Médicos  
 
-![GitHub repo](https://img.shields.io/badge/Status-Em%20desenvolvimento-orange)  
-![Tech](https://img.shields.io/badge/Tech-Spring%20%7C%20Next.js%20%7C%20MySql%20%7C%20Docker-blue)  
+<!-- ![GitHub repo](https://img.shields.io/badge/Status-Em%20desenvolvimento-orange) -->  
+![GitHub repo](https://img.shields.io/badge/Status-Concluído-green)
+![Tech](https://img.shields.io/badge/Tech-Spring%20%7C%20Next.js%20%7C%20MySQL%20%7C%20Docker-blue)  
 
 ## 📌 Sobre o Projeto  
 **AspisMed** é uma aplicação web para **gestão de atendimentos em consultórios de profissionais de saúde**. A plataforma permite que médicos, fisioterapeutas e outros profissionais organizem sua agenda, cadastrem pacientes, gerenciem atendimentos e acompanhem suas finanças de forma simples e eficiente.  
